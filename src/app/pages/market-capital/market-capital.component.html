@@ -1,0 +1,12 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="form-head mb-4 mb-sm-5 d-flex  flex-wrap align-items-center calander-btn">
+            <h2 class="font-w600 mb-0 me-auto">Market Capital</h2>
+            <app-dropdown [dropdown]="dropdown_item" class="me-3"></app-dropdown>
+            <a href="javascript:void(0);" class="btn btn-outline-primary"><i class="las la-calendar scale5 me-2"></i>Filter Periode</a>
+        </div>
+        <div class="row">
+            <app-market-table [marketCapital]="marketList"></app-market-table>
+        </div>
+    </div>
+</div>

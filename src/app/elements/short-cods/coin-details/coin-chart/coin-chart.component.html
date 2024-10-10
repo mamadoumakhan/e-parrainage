@@ -1,0 +1,47 @@
+<div class="card">
+    <div class="card-header pb-0 d-block d-sm-flex flex-wrap border-0 align-items-center">
+        <div class="me-auto mb-3">
+            <h4 class="fs-20 text-black">Coin Chart</h4>
+            <p class="mb-0 fs-12">Lorem ipsum dolor sit amet, consectetur</p>
+        </div>
+
+        <div class="input-group detault-daterange me-3  mb-3" style="overflow: inherit;">
+            <span class="input-group-text"><i class="las la-calendar"></i></span>
+            <app-date1 class="bg-color-remeve"></app-date1>
+        </div>
+
+        <app-dropdown [dropdown]="dropdown_item" class="mb-3"></app-dropdown>
+
+    </div>
+    <div class="card-body pb-0 pt-sm-3 pt-0">
+        <div class="row sp20 mb-4 align-items-center">
+            <div class="col-lg-4 col-xxl-4 col-sm-4 d-flex flex-wrap align-items-center">
+                <div class="px-2 info-group">
+                    <p class="fs-18 mb-1">Price</p>
+                    <h2 class="fs-28 font-w600 text-black">$11,898.15</h2>
+                </div>
+            </div>
+            <div class="d-flex col-lg-8 col-xxl-8 col-sm-8 align-items-center mt-sm-0 mt-3 justify-content-end">
+                <div class="px-2 info-group">
+                    <p class="fs-14 mb-1">24h% change</p>
+                    <h3 class="fs-20 font-w600"><span class="text-success">1.64%</span>
+                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M0 7L7.00001 -8.77983e-06L14 7H7.00001H0Z" fill="#2BC155"></path>
+                    </svg>
+                    </h3>
+                </div>
+                <div class="px-2 info-group">
+                    <p class="fs-14 mb-1">Volume (24h)</p>
+                    <h3 class="fs-20 font-w600 text-black">$47.22B</h3>
+                </div>
+                <div class="px-2 info-group">
+                    <p class="fs-14 mb-1">Market Cap</p>
+                    <h3 class="fs-20 font-w600 text-black">$219.24B</h3>
+                </div>
+            </div>
+        </div>
+        <div id="chartBarRunning" class="bar-chart">
+          <app-bar-chart-apex [chart_item]="chartOptions"></app-bar-chart-apex>
+        </div>
+    </div>
+</div>

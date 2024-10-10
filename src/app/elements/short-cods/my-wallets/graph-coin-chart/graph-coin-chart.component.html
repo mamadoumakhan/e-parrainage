@@ -1,0 +1,21 @@
+<div class="card">
+    <div class="card-header d-block d-sm-flex border-0 pb-sm-0 pb-0 align-items-center">
+        <div class="me-auto mb-sm-0 mb-3">
+            <h4 class="fs-20 text-black">Coin Chart</h4>
+            <p class="mb-0 fs-12">Lorem ipsum dolor sit amet, consectetur</p>
+        </div>
+        <app-dropdown [dropdown]="dropdown_item"></app-dropdown>
+    </div>
+    <div class="card-body pt-3">
+        <div class="flex-wrap mb-sm-4 mb-2 align-items-center">
+            <div class="d-flex align-items-center">
+                <span class="fs-32 text-black font-w600 pe-3">$557,235.31</span>
+                <span class="fs-22 text-success">7% <i class="fa fa-caret-up scale5 ms-2 text-success" aria-hidden="true"></i></span>
+            </div>
+            <p class="mb-0 text-black me-auto">Last Week <span class="text-success">$563,443</span></p>
+        </div>
+
+        <app-bar-chart-apex class="customer-chart timeline-chart" [chart_item]="optionsTimeline"/>
+
+    </div>
+</div>

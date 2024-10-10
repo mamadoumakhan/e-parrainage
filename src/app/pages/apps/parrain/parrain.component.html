@@ -1,0 +1,79 @@
+<!-- <div class="content-body">
+    <div class="container-fluid">
+       
+        <div class="modal fade" id="addProjectSidebar">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Create Project</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form>
+                            <div class="form-group">
+                                <label class="text-black font-w500">Project Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500">Deadline</label>
+                                <input type="date" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <label class="text-black font-w500">Client Name</label>
+                                <input type="text" class="form-control">
+                            </div>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary">CREATE</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="project-nav">
+            <div class="card-action card-tabs  me-auto">
+                <ul class="nav nav-tabs style-2" ngbNav #nav1="ngbNav" [(activeId)]="active">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link"> 
+                            All Projects <span class="badge badge-pill shadow-primary badge-primary">154</span> 
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-project-list-card [data]="'all'"></app-project-list-card>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link"> 
+                            On Progress <span class="badge badge-pill badge-info shadow-info">2</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-project-list-card [data]="'Progress'"></app-project-list-card>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="3" class="nav-item">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link"> 
+                            Pending <span class="badge badge-pill badge-warning shadow-warning">4</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-project-list-card [data]="'Pending'"></app-project-list-card>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="4" class="nav-item">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link"> 
+                            Closed <span class="badge badge-pill badge-danger shadow-danger">1</span>
+                        </a>
+                        <ng-template ngbNavContent>
+                            <app-project-list-card [data]="'Closed'"></app-project-list-card>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+            <a href="javascript:void(0);" class="btn btn-primary">+New Project</a>
+        </div>
+        <div class="tab-content project-list-group" id="myTabContent">	
+
+            <div [ngbNavOutlet]="nav1"></div>
+
+        </div>
+    </div>
+</div> -->

@@ -1,0 +1,75 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card">
+                    <div class="card-body d-flex justify-content-between align-items-center">
+                        <div>
+                            <h4>User Card View</h4>
+                            <span>Lorem ipsum sit amet</span>
+                        </div>
+                        <a href="javascript:void(0);" class="btn btn-info light">+ Add Card</a>
+                    </div>
+                </div>
+            </div>
+            @for(item of userList; track item){
+                <div class="col-xl-3 col-xxl-4 col-sm-6">
+                    <div class="card user-card">
+                        <div class="card-body pb-0">
+                            <div class="d-flex mb-3 align-items-center">
+                                <div class="dz-media me-3">
+                                    @if(item.image){
+                                        <img src="{{item.image}}" alt="">
+                                    } @else {
+                                        <span class="icon-placeholder bg-{{item.text_color}} text-white">
+                                          {{item.name.split(" ")[0] && item.name.split(" ")[0][0]}}{{item.name.split(" ")[1] && item.name.split(" ")[1][0]}}
+                                        </span>
+                                    }
+                                </div>
+                                <div>
+                                    <h5 class="title"><a href="javascript:void(0);">{{item.name}}</a></h5>
+                                    <span class="text-{{item.text_color}}">{{item.user_work}}</span>
+                                </div>
+                            </div>
+                            <p class="fs-12">{{item.desc}}</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">
+                                    <span class="mb-0 title">Email</span> :
+                                    <span class="text-black ms-2">{{item.email}}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="mb-0 title">Phone</span> :
+                                    <span class="text-black ms-2">{{item.phone}}</span>
+                                </li>
+                                <li class="list-group-item">
+                                    <span class="mb-0 title">Location</span> :
+                                    <span class="text-black desc-text ms-2">{{item.location}}</span>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer">
+                            <a href="javascript:void(0);" class="btn btn-{{item.btn_color}} btn-xs">Write Message</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        <nav>
+            <ul class="pagination pagination-gutter pagination-primary no-bg">
+                <li class="page-item page-indicator">
+                    <a class="page-link" href="javascript:void(0)">
+                        <i class="la la-angle-left"></i></a>
+                </li>
+                <li class="page-item "><a class="page-link" href="javascript:void(0)">1</a>
+                </li>
+                <li class="page-item active"><a class="page-link" href="javascript:void(0)">2</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">3</a></li>
+                <li class="page-item"><a class="page-link" href="javascript:void(0)">4</a></li>
+                <li class="page-item page-indicator">
+                    <a class="page-link" href="javascript:void(0)">
+                        <i class="la la-angle-right"></i></a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

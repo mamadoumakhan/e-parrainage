@@ -1,0 +1,73 @@
+<div class="content-body">
+    <div class="container-fluid">
+        <div class="form-head d-flex align-items-center flex-wrap mb-sm-5 mb-3">
+            <h2 class="font-w600 mb-0 text-black">My Wallet</h2>
+            <a href="javascript:void(0);" class="btn btn-outline-secondary ms-auto"><i class="las la-calendar scale5 me-2"></i>Filter Periode</a>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="table-responsive table-hover fs-14">
+
+                  <table mat-table matSort style="min-width: 845px" class="mat-sort table style-1 dataTable display mb-4 dataTablesCard short-one card-table text-black"
+                    (matSortChange)="sortData($event)">
+                    <thead>
+                      <tr>
+                        <th> </th>
+                        <th mat-sort-header="trans_id">Transaction ID</th>
+                        <th mat-sort-header="trans_date">Date</th>
+                        <th mat-sort-header="from">From</th>
+                        <th mat-sort-header="to">To</th>
+                        <th mat-sort-header="coin">Coin</th>
+                        <th mat-sort-header="amount">Amount</th>
+                        <th mat-sort-header="note">Note</th>
+                        <th mat-sort-header="status">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      @for(transaction of allData.data; track transaction; let i= $index){
+                        <tr>
+                            <td class="pr-0">
+                                <img class="ic-icon" src="{{transaction.image}}" />
+                            </td>
+                            <td>{{transaction.trans_id}}</td>
+                            <td>{{transaction.trans_date}}</td>
+                            <td>{{transaction.from}}</td>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <img src="{{transaction.user_image}}"  class="rounded-circle me-2 width36 height36" alt="">
+                                    <span>{{transaction.to}}</span>
+                                </div>
+                            </td>
+                            <td class="wspace-no">
+                                <span [innerHTML]="transaction.coin_image"></span>
+                                <span class="text-black">{{transaction.coin}}</span>
+                            </td>
+                            <td>
+                                <span class="text-black font-w600">{{transaction.amount}}</span>
+                            </td>
+                            <td>
+                                <p class="mb-0 wspace-no">{{transaction.note}}<a href="javascript:void(0);" class="text-secondary" [ngClass]="{'d-none':transaction.note == 'None'}">..More</a></p>
+                            </td>
+                            <td>
+                                <a href="javascript:void(0);" class="btn-link {{transaction.status_class}} float-right">{{transaction.status}}</a>
+                            </td>
+                        </tr>
+                      } @empty {
+                        <tr>
+                          <td class="text-center text-danger" colspan="11">NO RECORD FOUND</td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                  <div class="dataTables_wrapper">
+                    <div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing {{page}} to
+                      {{ allData.data.length }} of {{ allData.total }} entries</div>
+                    <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+                      <app-pagination [totalPage]="totalPage" [page]="page" (newPage)="pageChange($event)"></app-pagination>
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

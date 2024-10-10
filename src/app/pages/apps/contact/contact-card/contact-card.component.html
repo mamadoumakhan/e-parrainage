@@ -1,0 +1,239 @@
+<div class="content-body">
+    <!-- row -->
+    <div class="container-fluid">
+
+        <div class="project-nav">
+            <div class="card-action card-tabs  me-auto mb-md-0 mb-3">
+                <ul class="nav nav-tabs style-2" ngbNav #nav1="ngbNav" [(activeId)]="active">
+                    <li [ngbNavItem]="1" class="nav-item">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link" (click)="selectNavTab('allContacs')"> All Contacs <span class="badge badge-primary shadow-primary">154</span></a>
+                        <ng-template ngbNavContent>
+                            <div class="row dz-scroll  loadmore-content searchable-items list" id="allContactListContent">
+                                <div class="items items-header-section">
+                                </div>
+
+                                @for(item of userList; track item; let i = $index){
+                                    <div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6 items">
+                                        <div class="card contact-bx item-content">
+                                            <div class="card-header border-0">
+                                                <div class="action-dropdown">
+                                                    <div class="dropdown drop-no-arrow tbl-orders-style dropdown-no-icon" ngbDropdown>
+                                                        <a href="javascript:void(0);" ngbDropdownToggle >
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                                <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            </svg>
+                                                        </a>
+                                                        <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                                            <a class="dropdown-item" href="javascript:void(0);" (click)="openCenter(edit_user)" (click)="getDetaEdit(i)">Edit</a>
+                                                            <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="deleteUser(i)">Delete</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="card-body user-profile">
+                                                <div class="image-bx">
+                                                    @if(item.image){
+                                                    <img src="{{item.image}}" alt="" class="rounded-circle">
+                                                    } @else {
+                                                        <span class="icon-placeholder bgl-success rounded-circle text-success">
+                                                          {{item.name.split(" ")[0] && item.name.split(" ")[0][0]}}{{item.name.split(" ")[1] && item.name.split(" ")[1][0]}}
+                                                        </span>
+                                                    }
+                                                    <span class="active"></span>
+                                                </div>
+                                                <div class="media-body user-meta-info">
+                                                    <h6 class="fs-20 font-w500 my-1">
+                                                        <a routerLink="/admin/app-profile" class="text-black user-name" data-name="Alan Green">{{item.name}}</a>
+                                                    </h6>
+                                                    <p class="fs-14 mb-3 user-work" data-occupation="UI Designer">{{item.user_work}}</p>
+                                                    <ul>
+                                                        <li><a href="javascript:void(0);"><i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                                        <li><a routerLink="/admin/page-chat"><i class="las la-sms"></i></a></li>
+                                                        <li><a href="javascript:void(0);"><i class="fas fa-video" aria-hidden="true"></i></a></li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="row mb-5">
+                                <div class="col-xl-12 d-flex justify-content-center">
+                                    <a href="javascript:void(0);" class="btn btn-outline-primary dz-load-more" (click)="loadMoreData()">
+                                        Load More
+                                        @if(lodingData){
+                                            <i class="fa fa-spinner fa-pulse ms-1"></i>
+                                        }
+                                    </a>
+                                </div>
+                            </div>
+                        </ng-template>
+                    </li>
+                    <li [ngbNavItem]="2" class="nav-item" (click)="selectNavTab('pendingInvitation')">
+                        <a href="javascript:void(0);" ngbNavLink class="nav-link"> Pending Invitation <span class="badge shadow-warning  badge-warning">6</span> </a>
+                        <ng-template ngbNavContent>
+                            <div class="row dz-scroll loadmore-content" id="pendingListContent">
+                                <div class="items items-header-section">
+                                </div>
+                            @for(item of pendingInvitation; track item; let i = $index){
+                                <div class="col-xl-3 col-xxl-4 col-lg-4 col-md-6 col-sm-6 items">
+                                    <div class="card contact-bx item-content">
+                                        <div class="card-header border-0">
+                                            <div class="action-dropdown">
+                                                <div class="dropdown drop-no-arrow tbl-orders-style dropdown-no-icon" ngbDropdown>
+                                                    <a href="javascript:void(0);" ngbDropdownToggle>
+                                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                            <path d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                            <path d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                                        </svg>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end" ngbDropdownMenu>
+                                                        <a class="dropdown-item" href="javascript:void(0);" (click)="openCenter(edit_user)" (click)="getDetaEdit(i)">Edit</a>
+                                                        <a class="dropdown-item text-danger" href="javascript:void(0);" (click)="deleteUser(i)">Delete</a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="card-body user-profile">
+                                            <div class="image-bx">
+                                                @if(item.image){
+                                                <img src="{{item.image}}" alt="" class="rounded-circle">
+                                                } @else {
+                                                    <span class="icon-placeholder bgl-success rounded-circle text-success">
+                                                        {{item.name.split(" ")[0] && item.name.split(" ")[0][0]}}{{item.name.split(" ")[1] && item.name.split(" ")[1][0]}}
+                                                    </span>
+                                                }
+                                                <span class="active"></span>
+                                            </div>
+                                            <div class="media-body user-meta-info">
+                                                <h6 class="fs-20 font-w500 my-1"><a routerLink="/admin/app-profile" class="text-black user-name" data-name="Brian Samuel">{{item.name}}</a></h6>
+                                                <p class="fs-14 mb-3 user-work" data-occupation="Team Management">{{item.user_work}}</p>
+                                                <ul>
+                                                    <li><a href="javascript:void(0);"><i class="fa fa-phone" aria-hidden="true"></i></a></li>
+                                                    <li><a routerLink="/admin/page-chat"><i class="las la-sms"></i></a></li>
+                                                    <li><a href="javascript:void(0);"><i class="fas fa-video" aria-hidden="true"></i></a></li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                        <div class="row mb-5">
+                            <div class="col-xl-12 d-flex justify-content-center">
+                                <a href="javascript:void(0);" class="btn btn-outline-primary dz-load-more" (click)="loadMoreData()">
+                                    Load More
+                                    @if(lodingData){
+                                        <i class="fa fa-spinner fa-pulse ms-1"></i>
+                                    }
+                                </a>
+                            </div>
+                        </div>
+                        </ng-template>
+                    </li>
+                </ul>
+            </div>
+            <div class="d-flex align-items-center">
+                <a href="javascript:void(0);" id="btn-add-contact"  class="btn btn-primary text-white" (click)="openCenter(addContact)">+ New Contacts</a>
+            </div>
+        </div>
+        <div class="tab-content">
+
+                <div [ngbNavOutlet]="nav1"></div>
+
+        </div>
+    </div>
+    <!-- add Contact Modal -->
+    <ng-template #addContact let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title fs-20">Add Contact</h4>
+            <button type="button" class="close" (click)="modal.dismiss('Cross click')"><span>×</span></button>
+        </div>
+        <div class="modal-body">
+            <i class="flaticon-cancel-12 close" data-bs-dismiss="modal"></i>
+            <div class="add-contact-box">
+                <div class="add-contact-content">
+                    <form id="addContactModalTitle" [formGroup]="createForm" enctype="multipart/form-data">
+                        <div class="image-placeholder">
+                            <div class="avatar-edit">
+                                <input type="file" id="imageUpload" (change)="getImage($event)" formControlName="image" accept=".png, .jpg, .jpeg">
+                                <label for="imageUpload"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview" style="background-image: url({{imageURL}});"
+                                [style.border]="(submitted && f['image'].errors && f['image'].errors['required'])==true ? '1px solid red' :'0.0625rem solid #EEEEEE'">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-black font-w500">Name</label>
+                            <div class="contact-name">
+                                <input type="text" id="c-name" class="form-control" placeholder="Name" formControlName="name"
+                                [style.border]="(submitted && f['name'].errors && f['name'].errors['required'])==true ? '1px solid red' :'0.0625rem solid #EEEEEE'">
+                                <span class="validation-text"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-black font-w500">Occupation</label>
+                            <div class="contact-occupation">
+                                <input type="text" id="c-occupation" class="form-control" placeholder="Occupation" formControlName="occupation"
+                                [style.border]="(submitted && f['occupation'].errors && f['occupation'].errors['required'])==true ? '1px solid red' :'0.0625rem solid #EEEEEE'">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-danger" data-bs-dismiss="modal" (click)="modal.dismiss('Cross click')"> <i class="flaticon-delete-1"></i> Discard</button>
+            <button id="btn-add" class="btn btn-primary" (click)="onSubmit()">Add</button>
+        </div>
+    </ng-template>
+
+    <!-- Edit  Modal -->
+    <ng-template #edit_user let-modal>
+        <div class="modal-header">
+            <h4 class="modal-title fs-20">Edit Contact</h4>
+            <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+            <i class="flaticon-cancel-12 close" data-bs-dismiss="modal"></i>
+            <div class="add-contact-box">
+                <div class="add-contact-content">
+                    <form id="addContactModalTitle" [formGroup]="editForm" enctype="multipart/form-data">
+                        <div class="image-placeholder">
+                            <div class="avatar-edit">
+                                <input type="file" id="imageUpload" (change)="getImage($event)" accept=".png, .jpg, .jpeg">
+                                <label for="imageUpload"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview" style="background-image: url({{imageURL}});"></div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-black font-w500">Name</label>
+                            <div class="contact-name">
+                                <input type="text" id="c-name" class="form-control" formControlName="name" >
+                                <span class="validation-text"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="text-black font-w500">Occupation</label>
+                            <div class="contact-occupation">
+                                <input type="text" id="c-occupation" class="form-control" formControlName="occupation" >
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button id="btn-edit" class="float-left btn btn-primary" (click)="onSubmitEdit(edit_id)">Save</button>
+            <button class="btn btn-danger" data-bs-dismiss="modal" (click)="modal.dismiss('Cross click')"> <i class="flaticon-delete-1"></i> Discard</button>
+        </div>
+    </ng-template>
+
+</div>

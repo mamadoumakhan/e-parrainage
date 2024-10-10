@@ -1,0 +1,25 @@
+
+
+<div class="custom-dropdown dropdown bootstrap-select form-control image-select mt-3 mt-sm-0 {{ select_style }}">
+    <button type="button" tabindex="-1" data-bs-toggle="dropdown" role="combobox" aria-owns="bs-select-1"
+        aria-haspopup="listbox" aria-expanded="false" title="Cancel" class="btn dropdown-toggle btn-light">
+        <div class="filter-option">
+            <div class="filter-option-inner">
+              <div class="filter-option-inner-inner"><img src="{{ selectIgm }}"> {{ selectValue }}</div>
+            </div>
+        </div>
+    </button>
+
+    <div class="dropdown-menu" style="min-width: 100%;">
+        <ul class="dropdown-menu inner show" role="presentation">
+            @for(item of getValue; track item){
+            <li class="">
+                <a href="javascript:void(0);" (click)="getValueDrop( item.value , item.img)"
+                    [ngClass]="{'active':selectValue == item.value}" class="dropdown-item">
+                    <img src="{{ item.img }}" ><span class="text">{{ item.value }}</span>
+                </a>
+            </li>
+            }
+        </ul>
+    </div>
+</div>

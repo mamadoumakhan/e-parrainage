@@ -1,0 +1,48 @@
+<div class="card">
+    <div class="card-header d-sm-flex d-block pb-0 border-0">
+        <div>
+            <h4 class="fs-20 text-black">Quick Transfer</h4>
+            <p class="mb-0 fs-12">Lorem ipsum dolor sit amet, consectetur</p>
+        </div>
+        <app-image-dropdown [dropdown]="drop_item"></app-image-dropdown>
+    </div>
+    <div class="card-body">
+        <div class="form-wrapper">
+            <div class="form-group">
+                <div class="input-group input-group-lg">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Amount BTC</span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="742.2">
+                </div>
+            </div>
+        </div>
+        <div class="d-flex mb-3 mt-3 justify-content-between align-items-center">
+            <h4 class="text-black fs-20 mb-0">Recent Contacts</h4>
+            <a href="javascript:void(0);" class="btn-link">View more</a>
+        </div>
+
+        <owl-carousel-o [options]="customOptions">
+            @for(item of data; track item;){
+            <ng-template carouselSlide>
+                <div class="items">
+                    <div class="text-center">
+                        <img class="mb-3 rounded" src="{{ item.image }}" alt="">
+                        <h5 class="mb-0"><a class="text-black" href="javascript:void(0);">{{ item.name }}</a></h5>
+                        <span class="fs-12">{{ item.username }}</span>
+                    </div>
+                </div>
+            </ng-template>
+            }
+        </owl-carousel-o>
+
+        <div class="row pt-sm-5 pt-3 align-items-center">
+            <div class="col-sm-6 mb-sm-0 mb-3">
+                <p class="mb-0 fs-14">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut</p>
+            </div>
+            <div class="col-sm-6">
+                <a href="javascript:void(0);" class="btn btn-secondary d-block btn-lg">TRANSFER NOW</a>
+            </div>
+        </div>
+    </div>
+</div>

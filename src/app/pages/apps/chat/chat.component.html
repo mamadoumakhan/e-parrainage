@@ -1,0 +1,185 @@
+<div class="content-body chat-body">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xl-12">
+        <div class="card">
+          <div class="card-body chat-wrapper p-0">
+            <div class="chat-hamburger">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="chat-left-sidebar">
+              <div class="d-flex chat-fix-search align-items-center">
+                <img src="assets/images/profile/pic1.jpg" alt="" class="rounded-circle me-3">
+                <div class="input-group message-search-area">
+                  <input type="text" class="form-control form-bg-transparent" placeholder="Search here..">
+                  <div class="input-group-append">
+                    <button class="input-group-text"><i class="flaticon-381-search-2"></i></button>
+                  </div>
+                </div>
+              </div>
+              <div class="card-action card-tabs">
+                <ul class="nav nav-tabs style-3" ngbNav #nav1="ngbNav" [(activeId)]="active">
+                  <li [ngbNavItem]="1" class="nav-item">
+                    <a href="javascript:void(0);" ngbNavLink class="nav-link"> All Message </a>
+                    <ng-template ngbNavContent>
+                      @for(item of AllMessage; track item; let i = $index;){
+                      <div class="chat-list-area" [ngClass]="{'active': item.id == activeChatList}"
+                        (click)="opneChat(item.id)">
+                        <div class="image-bx">
+                          <img src="{{item.image}}" alt="" class="rounded-circle img-1">
+                          @if(item.time == 'Online'){
+                          <span class="active"></span>
+                          }
+                        </div>
+                        <div class="info-body">
+                          <div class="d-flex">
+                            <h6 class="text-black user-name mb-0 font-w600 fs-16" data-name="item.name">{{item.name}}
+                            </h6>
+                            <span class="ms-auto fs-14">{{item.time}}</span>
+                          </div>
+                          <p class="">{{item.msg}}</p>
+                        </div>
+                      </div>
+                      }
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="2" class="nav-item">
+                    <a href="javascript:void(0);" ngbNavLink class="nav-link"> Unread </a>
+                    <ng-template ngbNavContent>
+                      @for(item of tabpanel; track item){
+                      <div class="chat-list-area" data-chat="person11">
+                        <div class="image-bx">
+                          <img src="{{ item.image }}" alt="" class="rounded-circle img-1">
+                          @if(item.time == 'Online'){
+                          <span class="active"></span>
+                          }
+                        </div>
+                        <div class="info-body">
+                          <div class="d-flex">
+                            <h6 class="text-black user-name mb-0 font-w600 fs-16" data-name="item.name">{{ item.name }}
+                            </h6>
+                            <span class="ms-auto fs-14">{{ item.time }}</span>
+                          </div>
+                          <p class="">{{ item.msg }}</p>
+                        </div>
+                      </div>
+                      }
+                    </ng-template>
+                  </li>
+                  <li [ngbNavItem]="3" class="nav-item">
+                    <a href="javascript:void(0);" ngbNavLink class="nav-link"> Archived </a>
+                    <ng-template ngbNavContent>
+                      @for(item of archivedList; track item){
+                      <div class="chat-list-area" data-chat="person11">
+                        <div class="image-bx">
+                          <img src="{{ item.image }}" alt="" class="rounded-circle img-1">
+                          @if(item.time == 'Online'){
+                          <span class="active"></span>
+                          }
+                        </div>
+                        <div class="info-body">
+                          <div class="d-flex">
+                            <h6 class="text-black user-name mb-0 font-w600 fs-16" data-name="item.name">{{ item.name }}
+                            </h6>
+                            <span class="ms-auto fs-14">{{ item.time }}</span>
+                          </div>
+                          <p class="">{{ item.msg }}</p>
+                        </div>
+                      </div>
+                      }
+                    </ng-template>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body message-bx px-0 pt-3">
+                <div class="tab-content dz-scroll" id="message-bx">
+                  <div [ngbNavOutlet]="nav1"></div>
+                </div>
+              </div>
+            </div>
+            <div class="chart-right-sidebar">
+              <div class="message-bx chat-box">
+                <div class="d-flex justify-content-between chat-box-header">
+                  <div class="d-flex align-items-center">
+                    <img src="{{chatBoxData.image}}" alt="" class="rounded-circle main-img me-3">
+                    <h5 class="text-black font-w500 mb-sm-1 mb-0 title-nm">{{chatBoxData.name}}</h5>
+                  </div>
+                  <div class="d-flex align-items-center">
+                    <span class="d-sm-inline-block d-none">Last seen 4:23 AM</span>
+                    <div class="dropdown ms-2">
+                      <a href="javascript:void(0);" data-bs-toggle="dropdown" aria-expanded="false">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path
+                            d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+                            stroke="#575757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path
+                            d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z"
+                            stroke="#575757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                          <path
+                            d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z"
+                            stroke="#575757" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                      </a>
+                      <div class="dropdown-menu dropdown-menu-end">
+                        <a class="dropdown-item" href="javascript:void(0);">Edit</a>
+                        <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="chat-box-area dz-scroll" id="chartBox"
+                  style="background-image:url('assets/images/chat-bg.png');">
+                  <div data-chat="person1" class="chat active-chat">
+                    @for(item of messageChatList.data; track item){
+                    @if(item.send){
+                    <div class="media mb-4 received-msg  justify-content-start align-items-start">
+                      <div class="image-bx me-sm-3 me-2">
+                        <img src="{{item.img}}" alt="" class="rounded-circle img-1">
+                      </div>
+                      <div class="message-received">
+                        <p class="mb-1">
+                          {{item.mssg}}
+                        </p>
+                        <span class="fs-12 text-black">{{item.time}}</span>
+                      </div>
+                    </div>
+                    } @else {
+                    <div class="media mb-4 justify-content-end align-items-end">
+                      <div class="message-sent">
+                        <p class="mb-1">
+                          {{item.mssg}}
+                        </p>
+                        <span class="fs-12 text-black">{{item.time}}</span>
+                      </div>
+                      <div class="image-bx ms-sm-3 ms-2 mb-4">
+                        <img src="{{item.img}}" alt="" class="rounded-circle img-1">
+                      </div>
+                    </div>
+                    }
+                    }
+                  </div>
+
+                </div>
+                <div class="card-footer border-0 type-massage">
+                  <div class="input-group">
+                    <input class="form-control form-bg-transparent" placeholder="Type message..." [(ngModel)]="text"
+                      (keyup.enter)="sendMessage()" />
+                    <div class="input-group-append">
+                      <button type="button" class="btn p-0 me-4"><i
+                          class="las la-paperclip scale5 text-secondary"></i></button>
+                      <button type="button" class="btn p-0 me-3"><i
+                          class="las la-image scale5 text-secondary"></i></button>
+                      <button type="button" class="send-btn btn-primary btn" (click)="sendMessage()">SEND</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,22 @@
+
+<nav aria-label="Page navigation example" class="list-pagination">
+  <ul class="pagination mb-2 mb-sm-0 ">
+      <li class="page-item">
+          <a class="paginate_button previous" href="javascript:void(0)" (click)="pageChang(1)">
+              <i class="fa fa-angle-double-left"></i>
+          </a>
+      </li>
+      <span class="page-out">
+        @for(in of [].constructor(totalPage); track in;  let i = $index){
+        <li class="page-item">
+            <a class="paginate_button" href="javascript:void(0)" (click)="pageChang(i+1)" [ngClass]="{'current':((i+1).toString()==(page))}">{{i+1}}</a>
+        </li>
+        }
+      </span>
+      <li class="page-item">
+          <a class="paginate_button next" href="javascript:void(0)" (click)="pageChang(totalPage)">
+              <i class="fa fa-angle-double-right"></i>
+          </a>
+      </li>
+  </ul>
+</nav>

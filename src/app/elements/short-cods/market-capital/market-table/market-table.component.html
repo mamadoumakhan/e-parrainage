@@ -1,0 +1,72 @@
+<div class="col-xl-12">
+
+  <div class="table-responsive custom-table">
+    <table mat-table matSort style="min-width: 845px"
+      class="mat-sort no-footer mb-4 table display mb-4 dataTablesCard font-w600  border-no card-table text-black dataTable"
+      (matSortChange)="sortData($event)">
+      <thead>
+        <tr>
+          <th mat-sort-header="rank">Rank</th>
+          <th mat-sort-header="name">Coin</th>
+          <th mat-sort-header="price">Last Price</th>
+          <th mat-sort-header="change">Change (24h)</th>
+          <th mat-sort-header="volume">Volume (24h)</th>
+          <th>Graph</th>
+          <th class="bg-none width50"></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for(item of allData.data; track item){
+        <tr>
+          <td>
+            <span class="{{item.rank_class}}  rank-ic fs-20">{{item.rank}}</span>
+          </td>
+          <td class="wspace-no">
+            <span [innerHTML]="item.coin_image"></span>
+            <span class="text-black">{{item.name}}</span>
+          </td>
+          <td>{{item.price}}</td>
+          <td>{{item.change}}</td>
+          <td>{{item.volume}}</td>
+          <td>
+            <app-market-chart [data]="item.graph_series"></app-market-chart>
+          </td>
+          <td>
+            <div class="dropdown ms-4 drop-no-arrow" ngbDropdown>
+              <div class="btn-link" data-toggle="dropdown" ngbDropdownToggle>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M12 13C12.5523 13 13 12.5523 13 12C13 11.4477 12.5523 11 12 11C11.4477 11 11 11.4477 11 12C11 12.5523 11.4477 13 12 13Z"
+                    stroke="#A7A7A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M12 6C12.5523 6 13 5.55228 13 5C13 4.44772 12.5523 4 12 4C11.4477 4 11 4.44772 11 5C11 5.55228 11.4477 6 12 6Z"
+                    stroke="#A7A7A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                  <path
+                    d="M12 20C12.5523 20 13 19.5523 13 19C13 18.4477 12.5523 18 12 18C11.4477 18 11 18.4477 11 19C11 19.5523 11.4477 20 12 20Z"
+                    stroke="#A7A7A7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </div>
+              <div class="dropdown-menu dropdown-menu-right" ngbDropdownMenu>
+                <a class="dropdown-item" href="javascript:void(0);">Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);">Delete</a>
+              </div>
+            </div>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td class="text-center text-danger" colspan="11">NO RECORD FOUND</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+    <div class="dataTables_wrapper">
+      <div class="dataTables_info" id="example_info" role="status" aria-live="polite">Showing {{page}} to
+        {{ allData.data.length }} of {{ allData.total }} entries</div>
+      <div class="dataTables_paginate paging_simple_numbers" id="example_paginate">
+        <app-pagination [totalPage]="totalPage" [page]="page" (newPage)="pageChange($event)"></app-pagination>
+      </div>
+    </div>
+  </div>
+
+</div>
