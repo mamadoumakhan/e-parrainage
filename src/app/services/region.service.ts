@@ -42,7 +42,7 @@ export class RegionService {
   // -------------------------------------------
   // UPDATE : Méthode pour mettre à jour une région
   // -------------------------------------------
-  updateRegion(id: number, region: Region): Observable<Region> {
+  updateRegion(id: number, region: any): Observable<Region> {
     return this.http.put<Region>(`${this.apiUrl}${id}/`, region, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });

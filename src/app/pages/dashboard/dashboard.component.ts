@@ -6,6 +6,7 @@ import { QuickTransferCrousalComponent } from '../../elements/short-cods/dashboa
 import { RecentTradingActivitiesComponent } from '../../elements/short-cods/dashboard/recent-trading-activities/recent-trading-activities.component';
 import { DomSanitizer } from '@angular/platform-browser';
 import { DropdownComponent } from '../../elements/dropdown/dropdown.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 interface topCryptoType {
   icon: any,
@@ -36,7 +37,8 @@ interface quickTransferType {
     GraphCurrentStatisticComponent,
     QuickTradeComponent,
     QuickTransferCrousalComponent,
-    RecentTradingActivitiesComponent
+    RecentTradingActivitiesComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css'

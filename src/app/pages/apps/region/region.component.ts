@@ -7,7 +7,7 @@ import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
 import { Region, RegionService } from '../../../services/region.service';
 import { catchError, retry, throwError } from 'rxjs';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 export interface type {
@@ -20,7 +20,7 @@ export interface type {
 @Component({
   selector: 'app-region',
   standalone: true,
-  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent],
+  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
   templateUrl: './region.component.html',
   styleUrl: './region.component.css'
 })
@@ -45,6 +45,7 @@ export class RegionComponent implements OnInit{
   regions: Region[] = [];
   submitted: boolean = false;
   ajoutRegionForm!: FormGroup ;
+  updateRegionForm!: FormGroup ;
 
   constructor(
     private fb: FormBuilder,
@@ -52,7 +53,7 @@ export class RegionComponent implements OnInit{
   ) {
     // Initialisation du formulaire
     this.ajoutRegionForm = this.fb.group({
-      nom_region: ['', Validators.required] // 'name' est le champ du formulaire lié à 'nom_region'
+      nom_region: ['', Validators.required] 
     });
   }
   // constructor(private regionService: RegionService) {}
@@ -64,6 +65,10 @@ export class RegionComponent implements OnInit{
     this.getAllRegions();
     this.allData = this.paginator(this.emailTemplagtes, this.page, this.totalRows);
     this.totalPage = this.allData.total_pages;
+
+    this.updateRegionForm = this.fb.group({
+      nom_region: ['', Validators.required] 
+    });
   }
 
   pageChange(e: any) {    //  Page Change funcation   ---------
@@ -101,7 +106,22 @@ export class RegionComponent implements OnInit{
     }
   }
 
-  emailTemplagtes: Region[] = []
+  emailTemplagtes: Region[] = [
+    {
+      'id':1,
+      'nom_region':"Dakar"
+    },
+    {
+      'id':2,
+      'nom_region':"Diourbel"
+    },
+    {
+      'id':3,
+      'nom_region':"MATAM"
+    }
+  ]
+
+
    // Méthode pour récupérer toutes les régions
    getAllRegions(): void {
     this.regionService.getRegions().pipe(
@@ -120,10 +140,11 @@ export class RegionComponent implements OnInit{
   ajouterRegion() {
     if (this.ajoutRegionForm.valid) {
       // Créez un objet Region à partir des valeurs du formulaire
-      const nom_region = this.ajoutRegionForm.get('nom region')?.value;
+      const nom_region = this.ajoutRegionForm.get('nom_region')?.value;
       const data ={
       nom_region: nom_region,
      }
+     console.log("_______________Region saisie est ",nom_region)
 
       this.regionService.addRegion(data).subscribe(
         response => {
@@ -141,8 +162,41 @@ export class RegionComponent implements OnInit{
     }
   }
 
+  modifierRegion(id: number) {
+    if (this.updateRegionForm.valid) {
+      
+      // Récupérer le nom de la région modifié depuis le formulaire
+      const nom_region = this.updateRegionForm.get('nom_region')?.value;
+      
+      // Créer l'objet data avec l'ID et le nouveau nom
+      const data = {
+        nom_region: nom_region
+      };
+  
+      console.log("_______________Modification de la région avec ID :", id, "et données :", data);
+  
+      // Appeler le service pour mettre à jour la région
+      this.regionService.updateRegion(id, data).subscribe(
+        response => {
+          Swal.fire('Succès', 'La région a été modifiée avec succès', 'success').then(() => {
+            this.updateRegionForm.reset(); // Réinitialiser le formulaire après modification
+            this.getAllRegions(); // Rafraîchir la liste des régions
+          });
+        },
+        error => {
+          console.error('Erreur lors de la modification :', error);
+          Swal.fire('Erreur', 'Une erreur est survenue lors de la modification.', 'error');
+        }
+      );
+    } else {
+      Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
+    }
+  }
+  
+
   supprimerRegion(id: number) {
     // Pop-up de confirmation avant de supprimer
+    console.log("_____________ID a supprimer est :", id)
     Swal.fire({
       title: 'Êtes-vous sûr ?',
       text: "Cette action ne peut pas être annulée !",

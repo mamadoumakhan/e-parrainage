@@ -15,7 +15,8 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   providers: [
     ApiService,
-    RegionService
+    RegionService,
+    ReactiveFormsModule
   ],
   // bootstrap: [AppComponent]
 })

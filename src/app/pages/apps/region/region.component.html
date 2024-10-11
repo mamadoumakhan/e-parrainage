@@ -18,14 +18,13 @@
                         <li><a routerLink="/admin/cms-email-add" class="btn btn-primary">Ajouter Region</a></li>
                     </ul>
                 </div> -->
-                <!-- ************************************* Debut Modal************************************************ -->
+                <!-- ************************************* Debut Modal D'ajout ************************************************ -->
                 <ng-template #content let-modal>
                     <div class="modal-header">
                         <h4 class="modal-title" id="modal-basic-title">Ajout Region </h4>
                         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
                     </div>
                     <div class="modal-body">
-                    <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
                     <div class="container">
                         <form [formGroup]="ajoutRegionForm" (ngSubmit)="ajouterRegion()" >
                         <!-- <form id="addContactModalTitle" [formGroup]="createForm" enctype="multipart/form-data"> -->
@@ -36,20 +35,16 @@
                               Le nom de la région est obligatoire.
                             </div>
                           </div>
-                      
-                          <button type="submit" class="btn btn-primary" [disabled]="ajoutRegionForm.invalid">Ajouter Région</button>
+                          <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary" [disabled]="ajoutRegionForm.invalid">Ajouter Région</button>
+                          </div>
+                         
                         </form>
-                      </div>
-                      
-                     <!-- xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx -->
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-danger light" (click)="modal.close('Save click')">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
                     </div>
                 </ng-template>
                 
-                <button class="btn btn-primary mb-2 me-2" (click)="open(content)">Basic modal</button>
+                <button class="btn btn-primary mb-2 me-2" (click)="open(content)">Ajouter region</button>
                 
      <!-- ************************************ Fin Modal ********************************************** -->
                 <div class="filter cm-content-box box-primary">
@@ -81,23 +76,55 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @for(row of regions; track row; let i = $index){
+                                        @for(row of emailTemplagtes; track row; let i = $index){
                                             <tr>
                                                 <td>#{{ i+1 }}</td>
                                                 <td>{{ row.nom_region }}</td>
                                                 <td><a onclick="myFunction(this)" class=" btn btn-primary btn-sm content-icon status m-0"><i class="fa-solid fa-check"></i> </a></td>
                                                 <td>"la date"</td>
                                                 <td class="text-end">
-                                                        <a href="javascript:void(0);" class="btn btn-warning btn-sm content-icon me-2">
+                                                        <a href="javascript:void(0);"  class="btn btn-warning btn-sm content-icon me-2" (click)="open(content)">
                                                                 <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
-                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm content-icon me-0">
+                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm content-icon me-0" (click)="supprimerRegion(row.id)" >
                                                             <i class="fa-solid fa-trash"></i>
                                                         </a>
                                                 </td>
                                             </tr>
+
+                                            <ng-template #content let-modal>
+                                                <div class="modal-header">
+                                                    <h4 class="modal-title" id="modal-basic-title">Modification</h4>
+                                                    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                <!-- ----------------------------------------------- -->
+                                                <div class="container">
+                                                    <form [formGroup]="updateRegionForm" (ngSubmit)="modifierRegion(row.id)" >
+                                                        <div class="form-group">
+                                                        <label for="nom_region">Nom de la région</label>
+                                                        <input type="text" id="nom_region" formControlName="nom_region" class="form-control" placeholder="Entrer le nom de la région">
+                                                        <div *ngIf="updateRegionForm.get('nom_region')?.invalid && updateRegionForm.get('nom_region')?.touched" class="text-danger">
+                                                          Le nom de la région est obligatoire.
+                                                        </div>
+                                                      </div>
+                                                  
+                                                      <button type="submit" class="btn btn-primary" [disabled]="updateRegionForm.invalid">Enregistrer</button>
+                                                    </form>
+                                                  </div>
+                                                  
+                                                 <!-- ----------------------------------------------- -->
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-danger light" (click)="modal.close('Save click')">Close</button>
+                                                    <button type="button" class="btn btn-primary">Save changes</button>
+                                                </div>
+                                            </ng-template>
+
                                         }
                                     </tbody>
+
+                                
                                 </table>
                               </div>
                               <div class="dataTables_wrapper">
