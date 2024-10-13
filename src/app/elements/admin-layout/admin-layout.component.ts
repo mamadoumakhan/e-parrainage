@@ -94,6 +94,7 @@ import { NavHeaderComponent } from '../nav-header/nav-header.component';
 import { ChatboxComponent } from '../chatbox/chatbox.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
+// import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-admin-layout',

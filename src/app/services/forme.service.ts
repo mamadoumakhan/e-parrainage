@@ -3,61 +3,61 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 // Interface de base pour un modèle Region
-export interface Region {
+export interface Forme {
   id: number;
-  nom_region: string;
+  nom_forme: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegionService {
-  private apiUrl = 'http://127.0.0.1:8000/regions/';  // URL de base pour ton API
+export class FormeService {
+  private apiUrl = 'http://127.0.0.1:8000/forme_parrainage/';  // URL de base pour ton API
 
   constructor(private http: HttpClient) { }
 
   // -------------------------------------------
-  // CREATE : Méthode pour ajouter une nouvelle région
+  // CREATE : Méthode pour ajouter une nouvelle Forme
   // -------------------------------------------
-  addRegion(region: any): Observable<Region> {
-    return this.http.post<Region>(this.apiUrl, region, {
+  addForme(forme: any): Observable<Forme> {
+    return this.http.post<Forme>(this.apiUrl, forme, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
 
   // -------------------------------------------
-  // READ : Méthode pour récupérer toutes les régions
+  // READ : Méthode pour récupérer toutes les Formes
   // -------------------------------------------
-  getRegions(): Observable<Region[]> {
-    return this.http.get<Region[]>(this.apiUrl);
+  getFormes(): Observable<Forme[]> {
+    return this.http.get<Forme[]>(this.apiUrl);
   }
   // -------------------------------------------
-  // DELETE : Méthode pour Récuperer toutes les région 
+  // DELETE : Méthode pour Récuperer toutes les Forme 
   // -------------------------------------------
-  getAllRegions(): Observable<Region[]> {
-    return this.http.get<Region[]>(this.apiUrl);
-  }
-
-  // -------------------------------------------
-  // READ : Méthode pour récupérer une région par ID
-  // -------------------------------------------
-  getRegionById(id: number): Observable<Region> {
-    return this.http.get<Region>(`${this.apiUrl}${id}/`);
+  getAllFormes(): Observable<Forme[]> {
+    return this.http.get<Forme[]>(this.apiUrl);
   }
 
   // -------------------------------------------
-  // UPDATE : Méthode pour mettre à jour une région
+  // READ : Méthode pour récupérer une Forme par ID
   // -------------------------------------------
-  updateRegion(id: number, region: any): Observable<Region> {
-    return this.http.put<Region>(`${this.apiUrl}${id}/`, region, {
+  getFormeById(id: number): Observable<Forme> {
+    return this.http.get<Forme>(`${this.apiUrl}${id}/`);
+  }
+
+  // -------------------------------------------
+  // UPDATE : Méthode pour mettre à jour une Forme
+  // -------------------------------------------
+  updateForme(id: number, forme: any): Observable<Forme> {
+    return this.http.put<Forme>(`${this.apiUrl}${id}/`, forme, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
 
   // -------------------------------------------
-  // DELETE : Méthode pour supprimer une région par ID
+  // DELETE : Méthode pour supprimer une Forme par ID
   // -------------------------------------------
-  deleteRegion(id: number): Observable<void> {
+  deleteForme(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
   

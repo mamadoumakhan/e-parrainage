@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { TypeParrainageComponent } from './type-parrainage.component';
+import { FormeComponent } from './forme.component';
 
-describe('TypeParrainageComponent', () => {
-  let component: TypeParrainageComponent;
-  let fixture: ComponentFixture<TypeParrainageComponent>;
+describe('FormeComponent', () => {
+  let component: FormeComponent;
+  let fixture: ComponentFixture<FormeComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [TypeParrainageComponent]
+      imports: [FormeComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(TypeParrainageComponent);
+    fixture = TestBed.createComponent(FormeComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,25 +1,42 @@
 <div class="content-body">
     <div class="container-fluid">
+        <!-- <div class="row page-titles mx-0">
+
+            <app-breadcrumb [breadcrumb]="breadcrumbList"> </app-breadcrumb>
+
+        </div> -->
+        <!-- row -->
         <div class="row">
             <div class="col-xl-12">
+                <!-- <div class="filter cm-content-box box-primary">
+
+                    <app-filter-head></app-filter-head>
+
+                </div> -->
+                <!-- <div class="mb-5">
+                    <ul class="d-flex align-items-center">
+                        <li><a routerLink="/admin/cms-email-add" class="btn btn-primary">Ajouter forme</a></li>
+                    </ul>
+                </div> -->
                 <!-- ************************************* Debut Modal D'ajout ************************************************ -->
                 <ng-template #content let-modal>
                     <div class="modal-header">
-                        <h4 class="modal-title" id="modal-basic-title">Ajout commune </h4>
+                        <h4 class="modal-title" id="modal-basic-title">Ajout forme </h4>
                         <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
                     </div>
                     <div class="modal-body">
                     <div class="container">
-                        <form [formGroup]="ajoutCommuneForm" (ngSubmit)="ajouterCommune()" >
+                        <form [formGroup]="ajoutFormeForm" (ngSubmit)="ajouterForme()" >
+                        <!-- <form id="addContactModalTitle" [formGroup]="createForm" enctype="multipart/form-data"> -->
                           <div class="form-group">
-                            <label for="nom_commune">Nom de la Commune</label>
-                            <input type="text" id="nom_commune" formControlName="nom_commune" class="form-control" placeholder="Entrer le nom de la région">
-                            <div *ngIf="ajoutCommuneForm.get('nom_commune')?.invalid && ajoutCommuneForm.get('nom_commune')?.touched" class="text-danger">
-                              Le nom de la Commune est obligatoire.
+                            <label for="nom_forme">Nom de la forme</label>
+                            <input type="text" id="nom_forme" formControlName="nom_forme" class="form-control" placeholder="Entrer le nom de la forme">
+                            <div *ngIf="ajoutFormeForm.get('nom_forme')?.invalid && ajoutFormeForm.get('nom_forme')?.touched" class="text-danger">
+                              Le nom de la forme est obligatoire.
                             </div>
                           </div>
                           <div class="d-flex justify-content-end">
-                            <button type="submit" class="btn btn-primary" [disabled]="ajoutCommuneForm.invalid">Ajouter Région</button>
+                            <button type="submit" class="btn btn-primary" [disabled]="ajoutFormeForm.invalid">Ajouter forme</button>
                           </div>
                          
                         </form>
@@ -27,7 +44,7 @@
                     </div>
                 </ng-template>
                 
-                <button class="btn btn-primary mb-2 me-2" (click)="open(content)">Ajouter Commune</button>
+                <button class="btn btn-primary mb-2 me-2" (click)="open(content)">Ajouter forme</button>
                 
      <!-- ************************************ Fin Modal ********************************************** -->
                 <div class="filter cm-content-box box-primary">
@@ -35,7 +52,8 @@
                         <div class="cpa">
                             
                             <i class="fa-solid fa-city"></i>
-                            Liste des Commune
+                            <!-- <i class="fa-solid fa-envelope me-1"></i>  -->
+                            Liste des formes
                         </div>
                         <div class="tools">
                             <a href="javascript:void(0);" class="expand SlideToolHeader"
@@ -50,8 +68,7 @@
                                     <thead>
                                         <tr>
                                             <th class="text-black">Numero</th>
-                                            <th class="text-black">Nom Commune</th>
-                                            <th class="text-black">Nom Arrondissement</th>
+                                            <th class="text-black">Nom Forme</th>
                                             <th class="text-black">Statut</th>
                                             <th class="text-black">Date</th>
                                             <th class="text-end text-black">Actions</th>
@@ -62,19 +79,20 @@
                                         @for(row of emailTemplagtes; track row; let i = $index){
                                             <tr>
                                                 <td>#{{ i+1 }}</td>
-                                                <td>{{ row.nom_commune }}</td>
-                                                <td>"Nom Arrondissement"</td>
+                                                <td>{{ row.nom_forme }}</td>
                                                 <td><a onclick="myFunction(this)" class=" btn btn-primary btn-sm content-icon status m-0"><i class="fa-solid fa-check"></i> </a></td>
                                                 <td>"la date"</td>
+                                                <!-- <td>La date actuelle est : {{ currentDate | date:'yyyy-MM-dd' }}</td> -->
                                                 <td class="text-end">
                                                         <a href="javascript:void(0);"  class="btn btn-warning btn-sm content-icon me-2" (click)="open(content)">
                                                                 <i class="fa-solid fa-pen-to-square"></i>
                                                         </a>
-                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm content-icon me-0" (click)="supprimerCommune(row.id)" >
+                                                        <a href="javascript:void(0);" class="btn btn-danger btn-sm content-icon me-0" (click)="supprimerForme(row.id)" >
                                                             <i class="fa-solid fa-trash"></i>
                                                         </a>
                                                 </td>
                                             </tr>
+
                                             <ng-template #content let-modal>
                                                 <div class="modal-header">
                                                     <h4 class="modal-title" id="modal-basic-title">Modification</h4>
@@ -83,16 +101,16 @@
                                                 <div class="modal-body">
                                                 <!-- ----------------------------------------------- -->
                                                 <div class="container">
-                                                    <form [formGroup]="updateCommuneForm" (ngSubmit)="modifierCommune(row.id)" >
+                                                    <form [formGroup]="updateFormeForm" (ngSubmit)="modifierForme(row.id)" >
                                                         <div class="form-group">
-                                                        <label for="nom_commune">Nom de la région</label>
-                                                        <input type="text" id="nom_commune" formControlName="nom_commune" class="form-control" placeholder="Entrer le nom de la région">
-                                                        <div *ngIf="updatecommuneForm.get('nom_commune')?.invalid && updatecommuneForm.get('nom_commune')?.touched" class="text-danger">
-                                                          Le nom de la région est obligatoire.
+                                                        <label for="nom_forme">Nom de la Forme</label>
+                                                        <input type="text" id="nom_forme" formControlName="nom_forme" class="form-control" placeholder="Entrer le nom de la forme">
+                                                        <div *ngIf="updateFormeForm.get('nom_forme')?.invalid && updateFormeForm.get('nom_forme')?.touched" class="text-danger">
+                                                          Le nom de la forme est obligatoire.
                                                         </div>
                                                       </div>
                                                   
-                                                      <button type="submit" class="btn btn-primary" [disabled]="updateCommuneForm.invalid">Enregistrer</button>
+                                                      <button type="submit" class="btn btn-primary" [disabled]="updateFormeForm.invalid">Enregistrer</button>
                                                     </form>
                                                   </div>
                                                   

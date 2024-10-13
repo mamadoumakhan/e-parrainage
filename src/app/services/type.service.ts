@@ -2,25 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// Interface de base pour un modèle Region
-export interface Region {
+// Interface de base pour un modèle Type
+export interface Type {
   id: number;
-  nom_region: string;
+  nom_type_parrainage: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
-export class RegionService {
-  private apiUrl = 'http://127.0.0.1:8000/regions/';  // URL de base pour ton API
+export class TypeService {
+  private apiUrl = 'http://127.0.0.1:8000/type_parrainage/';  // URL de base pour ton API
 
   constructor(private http: HttpClient) { }
 
   // -------------------------------------------
   // CREATE : Méthode pour ajouter une nouvelle région
   // -------------------------------------------
-  addRegion(region: any): Observable<Region> {
-    return this.http.post<Region>(this.apiUrl, region, {
+  addType(type: any): Observable<Type> {
+    return this.http.post<Type>(this.apiUrl, type, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
@@ -28,28 +28,28 @@ export class RegionService {
   // -------------------------------------------
   // READ : Méthode pour récupérer toutes les régions
   // -------------------------------------------
-  getRegions(): Observable<Region[]> {
-    return this.http.get<Region[]>(this.apiUrl);
+  getTypes(): Observable<Type[]> {
+    return this.http.get<Type[]>(this.apiUrl);
   }
   // -------------------------------------------
   // DELETE : Méthode pour Récuperer toutes les région 
   // -------------------------------------------
-  getAllRegions(): Observable<Region[]> {
-    return this.http.get<Region[]>(this.apiUrl);
+  getAllTypes(): Observable<Type[]> {
+    return this.http.get<Type[]>(this.apiUrl);
   }
 
   // -------------------------------------------
   // READ : Méthode pour récupérer une région par ID
   // -------------------------------------------
-  getRegionById(id: number): Observable<Region> {
-    return this.http.get<Region>(`${this.apiUrl}${id}/`);
+  getTypeById(id: number): Observable<Type> {
+    return this.http.get<Type>(`${this.apiUrl}${id}/`);
   }
 
   // -------------------------------------------
   // UPDATE : Méthode pour mettre à jour une région
   // -------------------------------------------
-  updateRegion(id: number, region: any): Observable<Region> {
-    return this.http.put<Region>(`${this.apiUrl}${id}/`, region, {
+  updateType(id: number, type: any): Observable<Type> {
+    return this.http.put<Type>(`${this.apiUrl}${id}/`, type, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
@@ -57,7 +57,7 @@ export class RegionService {
   // -------------------------------------------
   // DELETE : Méthode pour supprimer une région par ID
   // -------------------------------------------
-  deleteRegion(id: number): Observable<void> {
+  deleteType(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}${id}/`);
   }
   

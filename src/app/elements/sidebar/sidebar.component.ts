@@ -275,7 +275,7 @@ export class SidebarComponent {
       title: "Type Parrainage",
       icon: "flaticon-381-layer-1",
       badge: true,
-      route: "/admin/page-type_parrainage"
+      route: "/admin/page-type"
     },
     {
       title: "Info Parrainage",
@@ -284,10 +284,10 @@ export class SidebarComponent {
       route: "/admin/page-info_parrainage"
     },
     {
-      title: "Forme Parrainage",
+      title: "Forme",
       icon: "flaticon-061-puzzle",
       badge: true,
-      route: "/admin/page-forme_parrainage"
+      route: "/admin/page-forme"
     },
     {
       title: "Type Liste",

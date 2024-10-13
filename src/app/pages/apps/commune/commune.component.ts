@@ -1,10 +1,15 @@
 import { NgClass } from '@angular/common';
-import { Component,OnInit } from '@angular/core';
+import { Component,inject,OnInit, TemplateRef } from '@angular/core';
 import { BreadcrumbComponent } from '../../../elements/breadcrumb/breadcrumb.component';
 import { FilterHeadComponent } from '../../../elements/short-cods/cms/filter-head/filter-head.component';
 import { PaginationComponent } from '../../../elements/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Commune, CommuneService } from '../../../services/commune.service';
+import { catchError, retry, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
 export interface type {
   id: number,
   title: string,
@@ -14,43 +19,63 @@ export interface type {
 @Component({
   selector: 'app-commune',
   standalone: true,
-  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent],
+  // imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent],
+  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent, ReactiveFormsModule],
   templateUrl: './commune.component.html',
   styleUrl: './commune.component.css'
 })
 export class CommuneComponent implements OnInit{
 
 // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-constructor(private http: HttpClient){
-  
+private modalService = inject(NgbModal);
+closeResult = '';
+
+
+open(content: TemplateRef<any>) {
+  this.modalService.open(content);
 }
+
+breadcrumbList = {
+  menu_path: 'CMS',
+  currentURL: 'Email Template',
+}
+
+page: any = 1;
+totalRows: number = 4;
+totalPage: any = 0;
+allData: any = [];
+communes: Commune[] = [];
+submitted: boolean = false;
+ajoutCommuneForm!: FormGroup ;
+updateCommuneForm!: FormGroup ;
+// currentDate: Date;  // Ajout de la propriété pour la date
+
+constructor(
+  private fb: FormBuilder,
+  private communeService: CommuneService
+) {
+  // Initialisation du formulaire
+  this.ajoutCommuneForm = this.fb.group({
+    nom_commune: ['', Validators.required] 
+  });
+  // Initialisation de la date actuelle
+  // this.currentDate = new Date();
+}
+// constructor(private communeService: CommuneService) {}
+
+nbFois = 3;
+listeCommune: any[] = []; 
+// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ngOnInit(): void {
-  this.fetchDetails();
+  this.getAllCommunes();
   this.allData = this.paginator(this.emailTemplagtes, this.page, this.totalRows);
   this.totalPage = this.allData.total_pages;
+
+  this.updateCommuneForm = this.fb.group({
+    nom_commune: ['', Validators.required] 
+  });
 }
-public fetchDetails(){
-  this.http.get("http://127.0.0.1:8000/commune/").subscribe(
-    (resp:any) => {
-      console.log();
-    }
-  );
-}
-title = 'Gestion Parrainage Senegal';
-// xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
-  breadcrumbList = {
-    menu_path: 'CMS',
-    currentURL: 'Email Template',
-  }
-
-  page: any = 1;
-  totalRows: number = 4;
-  totalPage: any = 0;
-  allData: any = [];
-
-
-  
   pageChange(e: any) {    //  Page Change funcation   ---------
     this.page = e;
     this.allData = this.paginator(this.emailTemplagtes, this.page, this.totalRows);
@@ -85,45 +110,122 @@ title = 'Gestion Parrainage Senegal';
     }
   }
 
-  emailTemplagtes: type[] = [
+  emailTemplagtes: Commune[] = [
     {
-      id: 1,
-      title: 'User Registration',
-      status: 'Active',
-      date: '03 Feb, 2024'
+      'id':1,
+      'nom_commune':"DK"
     },
     {
-      id: 2,
-      title: 'User Forgot Password',
-      status: 'Inactive',
-      date: '13 Jan, 2024'
+      'id':2,
+      'nom_commune':"DL"
     },
     {
-      id: 3,
-      title: 'User Activation',
-      status: 'Active',
-      date: '30 Jan, 2024'
-    },
-    {
-      id: 4,
-      title: 'User Login',
-      status: 'Active',
-      date: '25 June, 2024'
-    },
-    {
-      id: 5,
-      title: 'User Account Locked',
-      status: 'Active',
-      date: '15 Apr, 2024'
-    },
-    {
-      id: 6,
-      title: 'User Login',
-      status: 'Inactive',
-      date: '25 June, 2024'
+      'id':3,
+      'nom_commune':"MT"
     }
   ]
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
   
+   // Méthode pour récupérer toutes les Communes
+   getAllCommunes(): void {
+    this.communeService.getCommunes().pipe(
+      retry(3),
+      catchError(error => {
+        console.error('Erreur lors de la récupération des Communes', error);
+        return throwError('Veuillez réessayer');
+      })
+    ).subscribe(response => {
+      this.communes = response;
+      this.emailTemplagtes = response;
+      console.log('Communes récupérées:', this.communes);
+    });
+  }
+
+  ajouterCommune() {
+    if (this.ajoutCommuneForm.valid) {
+      // Créez un objet commune à partir des valeurs du formulaire
+      const nom_commune = this.ajoutCommuneForm.get('nom_commune')?.value;
+      const data ={
+      nom_commune: nom_commune,
+     }
+     console.log("_______________commune saisie est ",nom_commune)
+
+      this.communeService.addCommune(data).subscribe(
+        response => {
+          Swal.fire('Succès', 'Ajout réussi', 'success').then(() => {
+            this.ajoutCommuneForm.reset(); // Réinitialiser le formulaire après ajout
+            this.getAllCommunes(); // Rafraîchir la liste des Communes
+          });
+        },
+        error => {
+          console.error('Erreur lors de l\'ajout :', error);
+        }
+      );
+    } else {
+      Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
+    }
+  }
+
+  modifierCommune(id: number) {
+    if (this.updateCommuneForm.valid) {
+      
+      // Récupérer le nom de la commune modifié depuis le formulaire
+      const nom_commune = this.updateCommuneForm.get('nom_commune')?.value;
+      
+      // Créer l'objet data avec l'ID et le nouveau nom
+      const data = {
+        nom_commune: nom_commune
+      };
+  
+      console.log("_______________Modification de la commune avec ID :", id, "et données :", data);
+  
+      // Appeler le service pour mettre à jour la commune
+      this.communeService.updateCommune(id, data).subscribe(
+        response => {
+          Swal.fire('Succès', 'La commune a été modifiée avec succès', 'success').then(() => {
+            this.updateCommuneForm.reset(); // Réinitialiser le formulaire après modification
+            this.getAllCommunes(); // Rafraîchir la liste des Communes
+          });
+        },
+        error => {
+          console.error('Erreur lors de la modification :', error);
+          Swal.fire('Erreur', 'Une erreur est survenue lors de la modification.', 'error');
+        }
+      );
+    } else {
+      Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
+    }
+  }
+  
+
+  supprimerCommune(id: number) {
+    // Pop-up de confirmation avant de supprimer
+    console.log("_____________ID a supprimer est :", id)
+    Swal.fire({
+      title: 'Êtes-vous sûr ?',
+      text: "Cette action ne peut pas être annulée !",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#d33',
+      cancelButtonColor: '#3085d6',
+      confirmButtonText: 'Oui, supprimer !',
+      cancelButtonText: 'Annuler'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si l'utilisateur confirme, appelez la méthode de suppression
+        this.communeService.deleteCommune(id).subscribe(
+          response => {
+            Swal.fire('Supprimé !', 'La commune a été supprimée.', 'success');
+            this.getAllCommunes(); // Optionnel : rafraîchir la liste des Communes
+          },
+          error => {
+            console.error('Erreur lors de la suppression :', error);
+            Swal.fire('Erreur', 'Erreur lors de la suppression de la commune.', 'error');
+          }
+        );
+      }
+    });
+  }
+
   // xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 }

@@ -138,10 +138,11 @@ import { Departement2Component } from './pages/apps/departement2/departement2.co
 import { GroupeComponent } from './pages/apps/groupe/groupe.component';
 import { CandidatComponent } from './pages/apps/candidat/candidat.component';
 import { FormeParrainageComponent } from './pages/apps/forme-parrainage/forme-parrainage.component';
-import { TypeParrainageComponent } from './pages/apps/type-parrainage/type-parrainage.component';
 import { TypeListeComponent } from './pages/apps/type-liste/type-liste.component';
 import { AdminComponent } from './pages/apps/admin/admin.component';
 import { ParrainComponent } from './pages/apps/parrain/parrain.component';
+import { FormeComponent } from './pages/apps/forme/forme.component';
+import { TypeComponent } from './pages/apps/type/type.component';
 
 
 export const routes: Routes = [
@@ -165,7 +166,8 @@ export const routes: Routes = [
       { path: 'page-diaspora', component: DiasporaComponent },
       { path: 'page-groupe', component: GroupeComponent },
       { path: 'page-forme-parrainage', component: FormeParrainageComponent },
-      { path: 'page-type-parrainage', component: TypeParrainageComponent},
+      { path: 'page-forme', component: FormeComponent },
+      { path: 'page-type', component: TypeComponent },
       { path: 'page-type-liste', component: TypeListeComponent },
       { path: 'page-candidat', component: CandidatComponent },
       { path: 'page-parrain', component: ParrainComponent },

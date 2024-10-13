@@ -10,6 +10,7 @@ import { catchError, retry, throwError } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
 import { NgbModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Forme, FormeService } from '../../../services/forme.service';
 // import { CommonModule } from '@angular/common';
 export interface type {
   id: number,
@@ -19,13 +20,13 @@ export interface type {
 }
 
 @Component({
-  selector: 'app-region',
+  selector: 'app-forme',
   standalone: true,
   imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
-  templateUrl: './region.component.html',
-  styleUrl: './region.component.css'
+  templateUrl: './forme.component.html',
+  styleUrl: './forme.component.css'
 })
-export class RegionComponent implements OnInit{
+export class FormeComponent implements OnInit{
   private modalService = inject(NgbModal);
 	closeResult = '';
 
@@ -43,35 +44,35 @@ export class RegionComponent implements OnInit{
   totalRows: number = 4;
   totalPage: any = 0;
   allData: any = [];
-  regions: Region[] = [];
+  formes: Forme[] = [];
   submitted: boolean = false;
-  ajoutRegionForm!: FormGroup ;
-  updateRegionForm!: FormGroup ;
+  ajoutFormeForm!: FormGroup ;
+  updateFormeForm!: FormGroup ;
   // currentDate: Date;  // Ajout de la propriété pour la date
 
   constructor(
     private fb: FormBuilder,
-    private regionService: RegionService
+    private formeService: FormeService
   ) {
     // Initialisation du formulaire
-    this.ajoutRegionForm = this.fb.group({
-      nom_region: ['', Validators.required] 
+    this.ajoutFormeForm = this.fb.group({
+      nom_forme: ['', Validators.required] 
     });
     // Initialisation de la date actuelle
     // this.currentDate = new Date();
   }
-  // constructor(private regionService: RegionService) {}
+  // constructor(private formeService: formeService) {}
 
   nbFois = 3;
-  listeRegion: any[] = []; 
+  listeForme: any[] = []; 
 
   ngOnInit(): void {
-    this.getAllRegions();
+    this.getAllFormes();
     this.allData = this.paginator(this.emailTemplagtes, this.page, this.totalRows);
     this.totalPage = this.allData.total_pages;
 
-    this.updateRegionForm = this.fb.group({
-      nom_region: ['', Validators.required] 
+    this.updateFormeForm = this.fb.group({
+      nom_forme: ['', Validators.required] 
     });
   }
 
@@ -110,51 +111,51 @@ export class RegionComponent implements OnInit{
     }
   }
 
-  emailTemplagtes: Region[] = [
+  emailTemplagtes: Forme[] = [
     {
       'id':1,
-      'nom_region':"Dakar"
+      'nom_forme':"Dakar"
     },
     {
       'id':2,
-      'nom_region':"Diourbel"
+      'nom_forme':"Diourbel"
     },
     {
       'id':3,
-      'nom_region':"MATAM"
+      'nom_forme':"MATAM"
     }
   ]
 
 
-   // Méthode pour récupérer toutes les régions
-   getAllRegions(): void {
-    this.regionService.getRegions().pipe(
+   // Méthode pour récupérer toutes les formes
+   getAllFormes(): void {
+    this.formeService.getFormes().pipe(
       retry(3),
       catchError(error => {
-        console.error('Erreur lors de la récupération des régions', error);
+        console.error('Erreur lors de la récupération des formes', error);
         return throwError('Veuillez réessayer');
       })
     ).subscribe(response => {
-      this.regions = response;
+      this.formes = response;
       this.emailTemplagtes = response;
-      console.log('Régions récupérées:', this.regions);
+      console.log('formes récupérées:', this.formes);
     });
   }
 
-  ajouterRegion() {
-    if (this.ajoutRegionForm.valid) {
-      // Créez un objet Region à partir des valeurs du formulaire
-      const nom_region = this.ajoutRegionForm.get('nom_region')?.value;
+  ajouterForme() {
+    if (this.ajoutFormeForm.valid) {
+      // Créez un objet forme à partir des valeurs du formulaire
+      const nom_forme = this.ajoutFormeForm.get('nom_forme')?.value;
       const data ={
-      nom_region: nom_region,
+      nom_forme: nom_forme,
      }
-     console.log("_______________Region saisie est ",nom_region)
+     console.log("_______________Forme saisie est ",nom_forme)
 
-      this.regionService.addRegion(data).subscribe(
+      this.formeService.addForme(data).subscribe(
         response => {
           Swal.fire('Succès', 'Ajout réussi', 'success').then(() => {
-            this.ajoutRegionForm.reset(); // Réinitialiser le formulaire après ajout
-            this.getAllRegions(); // Rafraîchir la liste des régions
+            this.ajoutFormeForm.reset(); // Réinitialiser le formulaire après ajout
+            this.getAllFormes(); // Rafraîchir la liste des formes
           });
         },
         error => {
@@ -166,25 +167,27 @@ export class RegionComponent implements OnInit{
     }
   }
 
-  modifierRegion(id: number) {
-    if (this.updateRegionForm.valid) {
+  modifierForme(id: number) {
+    // **************************ID
+    // const id = this.selectedFormeId;
+    if (this.updateFormeForm.valid) {
       
-      // Récupérer le nom de la région modifié depuis le formulaire
-      const nom_region = this.updateRegionForm.get('nom_region')?.value;
+      // Récupérer le nom de la Forme modifié depuis le formulaire
+      const nom_forme = this.updateFormeForm.get('nom_forme')?.value;
       
       // Créer l'objet data avec l'ID et le nouveau nom
       const data = {
-        nom_region: nom_region
+        nom_forme: nom_forme
       };
   
-      console.log("_______________Modification de la région avec ID :", id, "et données :", data);
+      console.log("_______________Modification de la Forme avec ID :", id, "et données :", data);
   
-      // Appeler le service pour mettre à jour la région
-      this.regionService.updateRegion(id, data).subscribe(
+      // Appeler le service pour mettre à jour la Forme
+      this.formeService.updateForme(id, data).subscribe(
         response => {
-          Swal.fire('Succès', 'La région a été modifiée avec succès', 'success').then(() => {
-            this.updateRegionForm.reset(); // Réinitialiser le formulaire après modification
-            this.getAllRegions(); // Rafraîchir la liste des régions
+          Swal.fire('Succès', 'La Forme a été modifiée avec succès', 'success').then(() => {
+            this.updateFormeForm.reset(); // Réinitialiser le formulaire après modification
+            this.getAllFormes(); // Rafraîchir la liste des Formes
           });
         },
         error => {
@@ -196,9 +199,8 @@ export class RegionComponent implements OnInit{
       Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
     }
   }
-  
 
-  supprimerRegion(id: number) {
+  supprimerForme(id: number) {
     // Pop-up de confirmation avant de supprimer
     console.log("_____________ID a supprimer est :", id)
     Swal.fire({
@@ -213,14 +215,14 @@ export class RegionComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
         // Si l'utilisateur confirme, appelez la méthode de suppression
-        this.regionService.deleteRegion(id).subscribe(
+        this.formeService.deleteForme(id).subscribe(
           response => {
-            Swal.fire('Supprimé !', 'La région a été supprimée.', 'success');
-            this.getAllRegions(); // Optionnel : rafraîchir la liste des régions
+            Swal.fire('Supprimé !', 'La forme a été supprimée.', 'success');
+            this.getAllFormes(); // Optionnel : rafraîchir la liste des formes
           },
           error => {
             console.error('Erreur lors de la suppression :', error);
-            Swal.fire('Erreur', 'Erreur lors de la suppression de la région.', 'error');
+            Swal.fire('Erreur', 'Erreur lors de la suppression de la forme.', 'error');
           }
         );
       }

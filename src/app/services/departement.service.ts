@@ -5,23 +5,22 @@ import { Observable } from 'rxjs';
 // Interface de base pour un modèle Departement
 export interface Departement {
   id: number;
-  name: string;
-  description: string;
+  nom_departement: string;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class DepartementService {
-  private apiUrl = 'http://127.0.0.1:8000/Departements/';  // URL de base pour ton API
+  private apiUrl = 'http://127.0.0.1:8000/departement/';  // URL de base pour ton API
 
   constructor(private http: HttpClient) { }
 
   // -------------------------------------------
   // CREATE : Méthode pour ajouter un nouveau departement
   // -------------------------------------------
-  addDepartement(Departement: Departement): Observable<Departement> {
-    return this.http.post<Departement>(this.apiUrl, Departement, {
+  addDepartement(Any: any): Observable<Departement> {
+    return this.http.post<Departement>(this.apiUrl, Any, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }
@@ -43,8 +42,8 @@ export class DepartementService {
   // -------------------------------------------
   // UPDATE : Méthode pour mettre à jour un departement
   // -------------------------------------------
-  updateDepartement(id: number, Departement: Departement): Observable<Departement> {
-    return this.http.put<Departement>(`${this.apiUrl}${id}/`, Departement, {
+  updateDepartement(id: number, Any: any): Observable<Departement> {
+    return this.http.put<Departement>(`${this.apiUrl}${id}/`, Any, {
       headers: new HttpHeaders({ 'Content-Type': 'application/json' })
     });
   }

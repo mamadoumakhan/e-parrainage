@@ -5,7 +5,7 @@ import { FilterHeadComponent } from '../../../elements/short-cods/cms/filter-hea
 import { PaginationComponent } from '../../../elements/pagination/pagination.component';
 import { RouterLink } from '@angular/router';
 import { ApiService } from '../../../services/api.service';
-import { Region, RegionService } from '../../../services/region.service';
+import { Type, TypeService } from '../../../services/type.service';
 import { catchError, retry, throwError } from 'rxjs';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import Swal from 'sweetalert2';
@@ -19,13 +19,13 @@ export interface type {
 }
 
 @Component({
-  selector: 'app-region',
+  selector: 'app-type',
   standalone: true,
   imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
-  templateUrl: './region.component.html',
-  styleUrl: './region.component.css'
+  templateUrl: './type.component.html',
+  styleUrl: './type.component.css'
 })
-export class RegionComponent implements OnInit{
+export class TypeComponent implements OnInit{
   private modalService = inject(NgbModal);
 	closeResult = '';
 
@@ -43,19 +43,19 @@ export class RegionComponent implements OnInit{
   totalRows: number = 4;
   totalPage: any = 0;
   allData: any = [];
-  regions: Region[] = [];
+  types: Type[] = [];
   submitted: boolean = false;
-  ajoutRegionForm!: FormGroup ;
-  updateRegionForm!: FormGroup ;
+  ajoutTypeForm!: FormGroup ;
+  updateTypeForm!: FormGroup ;
   // currentDate: Date;  // Ajout de la propriété pour la date
 
   constructor(
     private fb: FormBuilder,
-    private regionService: RegionService
+    private typeService: TypeService
   ) {
     // Initialisation du formulaire
-    this.ajoutRegionForm = this.fb.group({
-      nom_region: ['', Validators.required] 
+    this.ajoutTypeForm = this.fb.group({
+      nom_type_parrainage: ['', Validators.required] 
     });
     // Initialisation de la date actuelle
     // this.currentDate = new Date();
@@ -63,15 +63,15 @@ export class RegionComponent implements OnInit{
   // constructor(private regionService: RegionService) {}
 
   nbFois = 3;
-  listeRegion: any[] = []; 
+  listeType: any[] = []; 
 
   ngOnInit(): void {
-    this.getAllRegions();
+    this.getAllTypes();
     this.allData = this.paginator(this.emailTemplagtes, this.page, this.totalRows);
     this.totalPage = this.allData.total_pages;
 
-    this.updateRegionForm = this.fb.group({
-      nom_region: ['', Validators.required] 
+    this.updateTypeForm = this.fb.group({
+      nom_type_parrainage: ['', Validators.required] 
     });
   }
 
@@ -110,51 +110,51 @@ export class RegionComponent implements OnInit{
     }
   }
 
-  emailTemplagtes: Region[] = [
+  emailTemplagtes: Type[] = [
     {
       'id':1,
-      'nom_region':"Dakar"
+      'nom_type_parrainage':"x"
     },
     {
       'id':2,
-      'nom_region':"Diourbel"
+      'nom_type_parrainage':"xx"
     },
     {
       'id':3,
-      'nom_region':"MATAM"
+      'nom_type_parrainage':"xxx"
     }
   ]
 
 
-   // Méthode pour récupérer toutes les régions
-   getAllRegions(): void {
-    this.regionService.getRegions().pipe(
+   // Méthode pour récupérer toutes les Types
+   getAllTypes(): void {
+    this.typeService.getTypes().pipe(
       retry(3),
       catchError(error => {
-        console.error('Erreur lors de la récupération des régions', error);
+        console.error('Erreur lors de la récupération des Types', error);
         return throwError('Veuillez réessayer');
       })
     ).subscribe(response => {
-      this.regions = response;
+      this.types = response;
       this.emailTemplagtes = response;
-      console.log('Régions récupérées:', this.regions);
+      console.log('Types récupérées:', this.types);
     });
   }
 
-  ajouterRegion() {
-    if (this.ajoutRegionForm.valid) {
+  ajouterType() {
+    if (this.ajoutTypeForm.valid) {
       // Créez un objet Region à partir des valeurs du formulaire
-      const nom_region = this.ajoutRegionForm.get('nom_region')?.value;
+      const nom_type_parrainage = this.ajoutTypeForm.get('nom_type_parrainage')?.value;
       const data ={
-      nom_region: nom_region,
+      nom_type_parrainage: nom_type_parrainage,
      }
-     console.log("_______________Region saisie est ",nom_region)
+     console.log("_______________type saisie est ",nom_type_parrainage)
 
-      this.regionService.addRegion(data).subscribe(
+      this.typeService.addType(data).subscribe(
         response => {
           Swal.fire('Succès', 'Ajout réussi', 'success').then(() => {
-            this.ajoutRegionForm.reset(); // Réinitialiser le formulaire après ajout
-            this.getAllRegions(); // Rafraîchir la liste des régions
+            this.ajoutTypeForm.reset(); // Réinitialiser le formulaire après ajout
+            this.getAllTypes(); // Rafraîchir la liste des Types
           });
         },
         error => {
@@ -166,25 +166,25 @@ export class RegionComponent implements OnInit{
     }
   }
 
-  modifierRegion(id: number) {
-    if (this.updateRegionForm.valid) {
+  modifierType(id: number) {
+    if (this.updateTypeForm.valid) {
       
-      // Récupérer le nom de la région modifié depuis le formulaire
-      const nom_region = this.updateRegionForm.get('nom_region')?.value;
+      // Récupérer le nom de la Type modifié depuis le formulaire
+      const nom_type_parrainage = this.updateTypeForm.get('nom_type_parrainage')?.value;
       
       // Créer l'objet data avec l'ID et le nouveau nom
       const data = {
-        nom_region: nom_region
+        nom_type_parrainage: nom_type_parrainage
       };
   
-      console.log("_______________Modification de la région avec ID :", id, "et données :", data);
+      console.log("_______________Modification de la Type avec ID :", id, "et données :", data);
   
-      // Appeler le service pour mettre à jour la région
-      this.regionService.updateRegion(id, data).subscribe(
+      // Appeler le service pour mettre à jour la Type
+      this.typeService.updateType(id, data).subscribe(
         response => {
-          Swal.fire('Succès', 'La région a été modifiée avec succès', 'success').then(() => {
-            this.updateRegionForm.reset(); // Réinitialiser le formulaire après modification
-            this.getAllRegions(); // Rafraîchir la liste des régions
+          Swal.fire('Succès', 'Le Type de Parrainage a été modifiée avec succès', 'success').then(() => {
+            this.updateTypeForm.reset(); // Réinitialiser le formulaire après modification
+            this.getAllTypes(); // Rafraîchir la liste des Types
           });
         },
         error => {
@@ -198,7 +198,7 @@ export class RegionComponent implements OnInit{
   }
   
 
-  supprimerRegion(id: number) {
+  supprimerType(id: number) {
     // Pop-up de confirmation avant de supprimer
     console.log("_____________ID a supprimer est :", id)
     Swal.fire({
@@ -213,14 +213,14 @@ export class RegionComponent implements OnInit{
     }).then((result) => {
       if (result.isConfirmed) {
         // Si l'utilisateur confirme, appelez la méthode de suppression
-        this.regionService.deleteRegion(id).subscribe(
+        this.typeService.deleteType(id).subscribe(
           response => {
-            Swal.fire('Supprimé !', 'La région a été supprimée.', 'success');
-            this.getAllRegions(); // Optionnel : rafraîchir la liste des régions
+            Swal.fire('Supprimé !', 'Le Type de parrainage a été supprimée.', 'success');
+            this.getAllTypes(); // Optionnel : rafraîchir la liste des Types
           },
           error => {
             console.error('Erreur lors de la suppression :', error);
-            Swal.fire('Erreur', 'Erreur lors de la suppression de la région.', 'error');
+            Swal.fire('Erreur', 'Erreur lors de la suppression du Type de parrainage.', 'error');
           }
         );
       }
