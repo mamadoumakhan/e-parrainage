@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, inject, OnInit, TemplateRef } from '@angular/core';
 import { BreadcrumbComponent } from '../../../elements/breadcrumb/breadcrumb.component';
 import { FilterHeadComponent } from '../../../elements/short-cods/cms/filter-head/filter-head.component';
@@ -24,7 +24,7 @@ export interface type {
 @Component({
   selector: 'app-departement',
   standalone: true,
-  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
+  imports: [NgClass, RouterLink, BreadcrumbComponent, CommonModule, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
   templateUrl: './departement.component.html',
   styleUrl: './departement.component.css'
 })
@@ -52,6 +52,13 @@ export class DepartementComponent implements OnInit{
   updateDepartementForm!: FormGroup ;
   // currentDate: Date;  // Ajout de la propriété pour la date
   regions: any[] = []; // Liste des régions à afficher dans le select
+
+  // listRegion = [
+  //   { id: 1, nom_region: "Dakar" },
+  //   { id: 2, nom_region: "Diourbel" },
+  //   { id: 3, nom_region: "MATAM" }
+  // ];
+
 
   constructor(
     private fb: FormBuilder,
@@ -126,6 +133,8 @@ export class DepartementComponent implements OnInit{
       'nom_departement':"MATAM"
     }
   ]
+
+
   // Méthode pour récupérer la liste des régions depuis l'API
   getRegions() {
     this.regionService.getAllRegions().subscribe(

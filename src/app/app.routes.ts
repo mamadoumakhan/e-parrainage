@@ -134,7 +134,6 @@ import { CommuneComponent } from './pages/apps/commune/commune.component';
 import { DepartementComponent } from './pages/apps/departement/departement.component';
 import { ArrondissementComponent } from './pages/apps/arrondissement/arrondissement.component';
 import { DiasporaComponent } from './pages/apps/diaspora/diaspora.component';
-import { Departement2Component } from './pages/apps/departement2/departement2.component';
 import { GroupeComponent } from './pages/apps/groupe/groupe.component';
 import { CandidatComponent } from './pages/apps/candidat/candidat.component';
 import { FormeParrainageComponent } from './pages/apps/forme-parrainage/forme-parrainage.component';

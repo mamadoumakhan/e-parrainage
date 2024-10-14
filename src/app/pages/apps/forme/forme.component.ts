@@ -1,4 +1,4 @@
-import { NgClass } from '@angular/common';
+import { CommonModule, NgClass } from '@angular/common';
 import { Component, inject, OnInit, TemplateRef } from '@angular/core';
 import { BreadcrumbComponent } from '../../../elements/breadcrumb/breadcrumb.component';
 import { FilterHeadComponent } from '../../../elements/short-cods/cms/filter-head/filter-head.component';
@@ -22,7 +22,7 @@ export interface type {
 @Component({
   selector: 'app-forme',
   standalone: true,
-  imports: [NgClass, RouterLink, BreadcrumbComponent, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
+  imports: [NgClass, RouterLink, BreadcrumbComponent,CommonModule, FilterHeadComponent, PaginationComponent,ReactiveFormsModule,],
   templateUrl: './forme.component.html',
   styleUrl: './forme.component.css'
 })
@@ -35,7 +35,7 @@ export class FormeComponent implements OnInit{
 		this.modalService.open(content);
 	}
 
-  breadcrumbList = {
+  breadcrumbList = {  
     menu_path: 'CMS',
     currentURL: 'Email Template',
   }
@@ -170,6 +170,7 @@ export class FormeComponent implements OnInit{
   modifierForme(id: number) {
     // **************************ID
     // const id = this.selectedFormeId;
+    
     if (this.updateFormeForm.valid) {
       
       // Récupérer le nom de la Forme modifié depuis le formulaire
