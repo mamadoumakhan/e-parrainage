@@ -1,5 +1,5 @@
 
-import { Component } from '@angular/core';
+import { Component, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { Sort } from '@angular/material/sort';
 import { MatSortModule } from '@angular/material/sort';
@@ -8,6 +8,10 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { RouterLink } from '@angular/router';
 import { PaginationComponent } from '../../../../elements/pagination/pagination.component';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { catchError, retry, throwError } from 'rxjs';
+import Swal from 'sweetalert2';
+import { User, UserService } from '../../../../services/user.service';
 
 export interface Dessert {
   id: number;
@@ -18,7 +22,9 @@ export interface Dessert {
   date: string;
   company_name: string;
   status: string;
-  status_class?: string
+  status_class?: string;
+
+  
 }
 @Component({
   selector: 'app-user-list',
@@ -31,14 +37,42 @@ export interface Dessert {
     NgbModule,
     RouterLink,
     PaginationComponent,
+    ReactiveFormsModule
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.css'
 })
-export class UserListComponent {
+export class UserListComponent implements OnInit {
 
-  constructor(private modalService: NgbModal) {
+
+  ajoutUserForm!: FormGroup ;
+  updateUserForm!: FormGroup ;
+  nbFois = 3;
+  listeUser: User[] = [];
+
+  @ViewChild('userModal') userModal!: TemplateRef<any>;
+  isModalOpen = false;
+
+  constructor(
+    private modalService: NgbModal,   
+    private fb: FormBuilder,
+    private UserService: UserService) 
+    {
     this.orderData = this.desserts.slice();
+
+        this.ajoutUserForm = this.fb.group({
+          username: ['', Validators.required],
+          email: ['', Validators.required],
+          password: ['', Validators.required],
+        });
+  }
+
+  openModal() {
+    this.isModalOpen = true;
+  }
+
+  closeModal() {
+    this.isModalOpen = false;
   }
 
   active = 1;
@@ -49,6 +83,7 @@ export class UserListComponent {
 
 
   ngOnInit(): void {
+    this.getAllUsers();
     this.allData = this.paginator(this.orderData, this.page, this.totalRows);
     this.totalPage = this.allData.total_pages;
   }
@@ -71,27 +106,6 @@ export class UserListComponent {
       status_class: 'warning'
     },
     {
-      id: 2,
-      name: 'Alex Smith',
-      email: 'alexsmith@gmail.com',
-      country: 'Indonasia',
-      date: '25/02/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Closed',
-      status_class: 'danger'
-    },
-    {
-      id: 3,
-      name: 'John Doe',
-      image: 'assets/images/users/pic3.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'Malesia',
-      date: '12/01/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Info',
-      status_class: 'info'
-    },
-    {
       id: 4,
       name: 'Alex Smith',
       image: 'assets/images/users/pic4.jpg',
@@ -101,16 +115,6 @@ export class UserListComponent {
       company_name: 'Abbott-Jacobs',
       status: 'Success',
       status_class: 'success'
-    },
-    {
-      id: 5,
-      name: 'Post Melone',
-      email: 'johndoe@gmail.com',
-      country: 'China',
-      date: '10/03/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Closed',
-      status_class: 'danger'
     },
     {
       id: 6,
@@ -123,72 +127,111 @@ export class UserListComponent {
       status: 'Info',
       status_class: 'info'
     },
-    {
-      id: 7,
-      name: 'John Doe',
-      image: 'assets/images/users/pic7.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'England',
-      date: '15/01/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Pending',
-      status_class: 'warning'
-    },
-    {
-      id: 8,
-      name: 'John Doe',
-      image: 'assets/images/users/pic8.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'England',
-      date: '15/01/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Success',
-      status_class: 'success'
-    },
-    {
-      id: 9,
-      name: 'John Doe',
-      image: 'assets/images/users/pic5.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'Africa',
-      date: '15/03/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Info',
-      status_class: 'info'
-    },
-    {
-      id: 10,
-      name: 'John Doe',
-      image: 'assets/images/users/pic7.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'China',
-      date: '15/04/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Closed',
-      status_class: 'danger'
-    },
-    {
-      id: 11,
-      name: 'John Doe',
-      email: 'johndoe@gmail.com',
-      country: 'England',
-      date: '11/21/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Success',
-      status_class: 'success'
-    },
-    {
-      id: 12,
-      name: 'John Doe',
-      image: 'assets/images/users/pic2.jpg',
-      email: 'johndoe@gmail.com',
-      country: 'Indonasia',
-      date: '15/02/2024',
-      company_name: 'Abbott-Jacobs',
-      status: 'Pending',
-      status_class: 'warning'
-    }
+  
   ];
+
+     // Méthode pour récupérer toutes les users
+     getAllUsers(): void {
+      this.UserService.getUsers().pipe(
+        retry(3),
+        catchError(error => {
+          console.error('Erreur lors de la récupération des users', error);
+          return throwError('Veuillez réessayer');
+        })
+      ).subscribe(response => {
+        this.listeUser = response;
+        // this.emailTemplagtes = response;
+        console.log('users récupérées:', this.listeUser);
+      });
+    }
+
+    ajouterUser() {
+      if (this.ajoutUserForm.valid) {
+        // Créez un objet User à partir des valeurs du formulaire
+        const nom_User = this.ajoutUserForm.get('nom_User')?.value;
+        const email_User = this.ajoutUserForm.get('nom_User')?.value; 
+        // remplir les autres recuperation
+
+        const data ={
+        nom_User: nom_User,
+        email_User: email_User
+       }
+       console.log("_______________User saisie est ",data)
+  
+        this.UserService.addUser(data).subscribe(
+          response => {
+            Swal.fire('Succès', 'Ajout réussi', 'success').then(() => {
+              this.ajoutUserForm.reset();
+              this.getAllUsers(); 
+            });
+          },
+          error => {
+            console.error('Erreur lors de l\'ajout :', error);
+          }
+        );
+      } else {
+        Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
+      }
+    }
+
+    modifierUser(id: number) {
+      if (this.updateUserForm.valid) {
+        const nom_User = this.updateUserForm.get('nom_User')?.value;
+        const email_User = this.updateUserForm.get('nom_User')?.value;
+        
+        // Créer l'objet data avec l'ID et le nouveau nom
+        const data = {
+          nom_User: nom_User,
+          email_User: email_User
+        };
+    
+        console.log("_______________Modification de la user avec ID :", id, "et données :", data);
+    
+        this.UserService.updateUser(id, data).subscribe(
+          response => {
+            Swal.fire('Succès', 'user a été modifiée avec succès', 'success').then(() => {
+              this.updateUserForm.reset();
+              this.getAllUsers(); 
+            });
+          },
+          error => {
+            console.error('Erreur lors de la modification :', error);
+            Swal.fire('Erreur', 'Une erreur est survenue lors de la modification.', 'error');
+          }
+        );
+      } else {
+        Swal.fire('Erreur', 'Veuillez remplir tous les champs obligatoires.', 'error');
+      }
+    }
+
+    supprimerUser(id: number) {
+      // Pop-up de confirmation avant de supprimer
+      console.log("_____________ID a supprimer est :", id)
+      Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Cette action ne peut pas être annulée !",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Oui, supprimer !',
+        cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Si l'utilisateur confirme, appelez la méthode de suppression
+          this.UserService.deleteUser(id).subscribe(
+            response => {
+              Swal.fire('Supprimé !', 'La user a été supprimée.', 'success');
+              this.getAllUsers(); // Optionnel : rafraîchir la liste des users
+            },
+            error => {
+              console.error('Erreur lors de la suppression :', error);
+              Swal.fire('Erreur', 'Erreur lors de la suppression de la user.', 'error');
+            }
+          );
+        }
+      });
+    }
 
   orderData: Dessert[];
   sortData(sort: Sort) {

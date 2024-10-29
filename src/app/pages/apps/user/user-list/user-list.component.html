@@ -8,7 +8,38 @@
         </div>
         <a href="javascript:void(0);" class="btn btn-info light me-3"><i class="las la-download scale3 me-2"></i>Import
           Csv</a>
-        <a href="javascript:void(0);" class="btn btn-info">+ Add Customer</a>
+        
+          <!-- Bouton pour ouvrir le modal -->
+<a href="javascript:void(0);" class="btn btn-info" (click)="openModal()">+ Ajouter un utilisateur</a>
+
+<!-- Template du modal -->
+<ng-template #userModal>
+  <div class="modal fade show" tabindex="-1" role="dialog" style="display: block;">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Ajouter un Utilisateur</h5>
+          <button type="button" class="close" (click)="closeModal()" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <!-- Contenu du formulaire d'ajout d'utilisateur -->
+          <form>
+
+            <!-- Ajoutez d'autres champs nécessaires ici -->
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="closeModal()">Annuler</button>
+          <button type="button" class="btn btn-primary" (click)="ajouterUser()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+
       </div>
       <div class="card-body">
         <div class="table-responsive">
